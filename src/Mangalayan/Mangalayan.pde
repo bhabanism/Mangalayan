@@ -18,13 +18,15 @@ int yug = 2000;
 
 Mars mars;
 Earth earth;
-final static int maxSpeed = 5; 
+final static int maxSpeed = 4; 
 
 void setup() {  
   stats.put("Born above avg : ", 0);
   stats.put("Born below avg : ", 0);
   stats.put("Died above avg : ", 0);
   stats.put("Died below avg : ", 0);
+  stats.put("Crashed on Mars : ", 0);
+  stats.put("Crashed on Earth : ", 0);
   
   size(1200, 750);
   mars = new Mars();
@@ -32,7 +34,9 @@ void setup() {
   for (int i = 0; i < initialpopulation; i++) {
     PVector earthLocation = earth.getLocation();
     PVector rocketLocation = earthLocation.add(new PVector(random(-2,2),random(-2,2)));
+    
     PVector initialThrust = new PVector(random(-1*maxSpeed,1*maxSpeed),random(-1*maxSpeed,1*maxSpeed));
+    //PVector rocketLocation = earthLocation.add(initialThrust.normalize().mult(earth.diameter/2));
     Rocket rocket = new Rocket(random(3, 5),rocketLocation, initialThrust);    
     rockets.add(rocket);
   }
@@ -64,7 +68,18 @@ void draw() {
         if(mars.isCrashed(rocket)) {
           iter.remove(); //TODO: crashed rocket animation
           rocket.destroy();
-        }        
+            int n = stats.get("Crashed on Mars : ");
+            n++;
+            stats.put("Crashed on Mars : ", n);
+        }          
+        if(earth.isCrashed(rocket)) {
+          iter.remove(); //TODO: crashed rocket animation
+          rocket.destroy();
+          int n = stats.get("Crashed on Earth : ");
+          n++;
+          stats.put("Crashed on Earth : ", n);
+        }   
+        
         rocket.calculateFitness(mars);
         if(rocket.isFitToClone(avgScore) && rockets.size() < maxPopulation+50) {
           iter.add(new Rocket(rocket, mutationRate));
@@ -115,6 +130,9 @@ float updateScore() {
   noticeboard += "\nBorn below avg : " + stats.get("Born below avg : ");
   noticeboard += "\nDied above avg : " + stats.get("Died above avg : ");
   noticeboard += "\nDied below avg : " + stats.get("Died below avg : ");
+  noticeboard += "\nCrashed on Mars : " + stats.get("Crashed on Mars : ");
+  noticeboard += "\nCrashed on Earth : " + stats.get("Crashed on Earth : ");
+
   text(noticeboard, width*2/3,height*2/3);
   PVector loc = bestRocket.getLocation();
   rect(loc.x, loc.y, 5, 5);

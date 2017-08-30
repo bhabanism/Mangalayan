@@ -11,4 +11,7 @@ class Earth extends Planet {
     super.display();
   } 
   
+  boolean isCrashed(Rocket rocket) {
+     return this.getLocation().dist(rocket.getLocation()) < this.diameter/2 && rocket.lowFuel()  ? true: false;
+  }  
 }
