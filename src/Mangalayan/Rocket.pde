@@ -2,18 +2,43 @@ class Rocket {
 
   PVector location;
   PVector velocity;
-  PVector acceleration;
-  float mass;
-  int fuel;
-  
+  PVector acceleration;  
+  int fuel;  
+  float scaleForFuel = 2;
   int r,g,b;
+  
+  //genes
+  final PVector launchLocation;
+  final PVector initialThurst;
+  final float mass;
+  
 
-  Rocket(float m, PVector location, PVector initialThurst) {
-    mass = m;
-    this.location = location;
+  Rocket(float mass, PVector launchLocation, PVector initialThurst) {
+    this.mass = mass;
+    this.initialThurst = new PVector(initialThurst.x, initialThurst.y);
+    this.launchLocation = new PVector(launchLocation.x, launchLocation.y);
+    
+    this.location = launchLocation;
     velocity = new PVector(0, 0);
     acceleration = initialThurst;
-    fuel = (int)(height*2*mass); //fuel proportional to mass, twice the height to give enough time for rocket to revolve a few times
+    fuel = (int)(height*mass*scaleForFuel); //fuel proportional to mass, twice the height to give enough time for rocket to revolve a few times
+    this.setColor((int)random(255),(int)random(255),(int)random(255));
+  }
+  
+  Rocket(Rocket rocket) {
+    this(rocket.getMass(), rocket.getLaunchLocation(), rocket.getInitialThurst());    
+  }
+  
+  float getMass() {
+    return this.mass;
+  }
+  
+  PVector getLaunchLocation() {
+    return this.launchLocation;
+  }
+  
+  PVector getInitialThurst() {
+    return this.initialThurst;
   }
 
   void applyForce(PVector force) {

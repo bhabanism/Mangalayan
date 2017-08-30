@@ -1,6 +1,7 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
-int initialpopulation = 150;
+int initialpopulation = 50;
 //Rocket[] rockets = new Rocket[initialpopulation];
 ArrayList<Rocket> rockets = new ArrayList<Rocket>();
 
@@ -16,8 +17,7 @@ void setup() {
     PVector earthLocation = earth.getLocation();
     PVector rocketLocation = earthLocation.add(new PVector(random(-2,2),random(-2,2)));
     PVector initialThrust = new PVector(random(-1*maxSpeed,1*maxSpeed),random(-1*maxSpeed,1*maxSpeed));
-    Rocket rocket = new Rocket(random(0.1, 1),rocketLocation, initialThrust);
-    rocket.setColor((int)random(255),(int)random(255),(int)random(255));
+    Rocket rocket = new Rocket(random(0.5, 1),rocketLocation, initialThrust);    
     rockets.add(rocket);
   }
 }
@@ -26,7 +26,26 @@ void draw() {
   background(255);
   mars.display();
   earth.display();  
-  for(Rocket rocket : rockets) {
+  
+  ListIterator<Rocket> iter = rockets.listIterator();
+
+  while (iter.hasNext()) {
+      Rocket rocket = (Rocket)iter.next();  
+      if(rocket.isAlive()) {
+        PVector marsForce = mars.attract(rocket);
+        PVector earthForce = earth.attract(rocket);
+        PVector totalForce = marsForce.add(earthForce);
+        rocket.applyForce(totalForce);
+        rocket.update();    
+        rocket.display();   
+    } else {
+      iter.remove();
+      iter.add(new Rocket(rocket));
+    }
+  }
+
+
+  /*for(Rocket rocket : rockets) {
     if(rocket.isAlive()) {
       PVector marsForce = mars.attract(rocket);
       PVector earthForce = earth.attract(rocket);
@@ -34,8 +53,10 @@ void draw() {
       rocket.applyForce(totalForce);
       rocket.update();    
       rocket.display();   
+    } else {
+      rockets.add(rocket);
     }
-  }
+  }*/
 }
 
 Rocket createRocket() {
