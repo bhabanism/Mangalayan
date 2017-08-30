@@ -4,25 +4,38 @@ import java.util.ListIterator;
 int initialpopulation = 50;
 //Rocket[] rockets = new Rocket[initialpopulation];
 ArrayList<Rocket> rockets = new ArrayList<Rocket>();
+ 
+Rocket bestRocket;
+float bestScore = 0;
+float avgScore = 0;
+int generation = 0;
+int maxPopulation = 100;
+float mutationRate = 0.01;
 
 Mars mars;
 Earth earth;
-final static int maxSpeed = 3; 
+final static int maxSpeed = 6; 
 
 void setup() {  
-  size(800, 750);
+  size(1200, 750);
   mars = new Mars();
   earth = new Earth();
   for (int i = 0; i < initialpopulation; i++) {
     PVector earthLocation = earth.getLocation();
     PVector rocketLocation = earthLocation.add(new PVector(random(-2,2),random(-2,2)));
     PVector initialThrust = new PVector(random(-1*maxSpeed,1*maxSpeed),random(-1*maxSpeed,1*maxSpeed));
-    Rocket rocket = new Rocket(random(0.5, 1),rocketLocation, initialThrust);    
+    Rocket rocket = new Rocket(random(3, 6),rocketLocation, initialThrust);    
     rockets.add(rocket);
   }
 }
 
 void draw() {
+  
+  generation++;
+  if(rockets.size()> maxPopulation) {
+    massExtinction();
+  }
+          
   background(255);
   mars.display();
   earth.display();  
@@ -40,20 +53,51 @@ void draw() {
         rocket.display();
         if(mars.isCrashed(rocket)) {
           iter.remove(); //TODO: crashed rocket animation
-          iter.add(new Rocket(rocket)); //clone
+          rocket.destroy();
+        }        
+        rocket.calculateFitness(mars);
+        if(rocket.isFitToClone(avgScore) && rockets.size() < maxPopulation+50) {
+          iter.add(new Rocket(rocket, mutationRate));
         }
     } else {
       iter.remove(); //TODO: lost rocket animation
-      iter.add(new Rocket(rocket)); //clone
+      rocket.destroy();
+    }    
+  }
+  avgScore = updateScore();
+}
+
+
+void massExtinction() {
+  for(Rocket rocket : rockets) {
+    if(rocket.lowFuel()) {
+      //rocket.destroy();
     }
   }
 }
 
-Rocket createRocket() {
-  PVector earthLocation = earth.getLocation();
-  PVector rocketLocation = earthLocation.add(new PVector(random(-2,2),random(-2,2)));
-  PVector initialThrust = new PVector(random(-1*maxSpeed,1*maxSpeed),random(-1*maxSpeed,1*maxSpeed));
-  Rocket rocket = new Rocket(random(0.1, 1),rocketLocation, initialThrust);
-  rocket.setColor((int)random(255),(int)random(255),(int)random(255));
-  return rocket;
+float updateScore() {
+  PFont f = createFont("Courier", 10, true);
+  textFont(f);
+  fill(0);
+  float sum = 0;
+ 
+  for(Rocket rocket : rockets) {
+    if(rocket.fitness > bestScore) {
+      bestScore = rocket.fitness;
+      bestRocket = rocket;
+    }
+    sum += rocket.fitness;
+  }
+  avgScore = rockets.size() >0 ? sum/rockets.size() : 0;
+  String noticeboard = "Best Score: " + bestScore;
+  noticeboard += "\n Average Score : " + avgScore;
+  noticeboard += "\n Generation: " + generation;
+  noticeboard += "\n fuel left with best rocket : " + bestRocket.fuel;
+  noticeboard += "\n Population : " + rockets.size();
+  noticeboard += "\n debug noise : " + noise(random(10));
+  text(noticeboard, width*2/3,height*5/6);
+  PVector loc = bestRocket.getLocation();
+  rect(loc.x, loc.y, 5, 5);
+  return avgScore;
 }
