@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-int initialpopulation = 50;
+int initialpopulation = 25;
 //Rocket[] rockets = new Rocket[initialpopulation];
 ArrayList<Rocket> rockets = new ArrayList<Rocket>();
 
@@ -11,12 +11,14 @@ Rocket bestRocket;
 float bestScore = 0;
 float avgScore = 0;
 int generation = 0;
-int maxPopulation = 100;
-float mutationRate = 0.01;
+int maxPopulation = 300;
+float mutationRate = 0.1;
+float survivalRate = 0.3;
+int yug = 2000;
 
 Mars mars;
 Earth earth;
-final static int maxSpeed = 6; 
+final static int maxSpeed = 5; 
 
 void setup() {  
   stats.put("Born above avg : ", 0);
@@ -31,7 +33,7 @@ void setup() {
     PVector earthLocation = earth.getLocation();
     PVector rocketLocation = earthLocation.add(new PVector(random(-2,2),random(-2,2)));
     PVector initialThrust = new PVector(random(-1*maxSpeed,1*maxSpeed),random(-1*maxSpeed,1*maxSpeed));
-    Rocket rocket = new Rocket(random(3, 6),rocketLocation, initialThrust);    
+    Rocket rocket = new Rocket(random(3, 5),rocketLocation, initialThrust);    
     rockets.add(rocket);
   }
 }
@@ -39,7 +41,8 @@ void setup() {
 void draw() {
   
   generation++;
-  if(rockets.size()> maxPopulation) {
+  if(rockets.size()>= maxPopulation*survivalRate && generation%yug == 0) {
+  //if(rockets.size()>= maxPopulation) {
     massExtinction();
   }
           
@@ -76,11 +79,18 @@ void draw() {
 
 
 void massExtinction() {
+  ArrayList<Rocket> survivors = new ArrayList<Rocket>();
+  survivors.add(bestRocket);
   for(Rocket rocket : rockets) {
-    if(rocket.lowFuel()) {
-      rocket.destroy();
+    if((!rocket.lowFuel() || rocket.isScoreAboveAvg()) && survivors.size() < maxPopulation*survivalRate) {
+      survivors.add(rocket);
     }
   }
+  rockets.clear();
+   for(Rocket rocket : survivors) {
+      rockets.add(new Rocket(rocket, mutationRate));
+      rockets.add(rocket);
+   }
 }
 
 float updateScore() {

@@ -7,7 +7,7 @@ class Rocket {
   float scaleForFuel = 1.5;
   int r,g,b;
   float fitness = 0;
-  final int fuelUsage = 2;
+  final int fuelUsage = 4;
   
   //genes
   final PVector launchLocation;
@@ -49,7 +49,7 @@ class Rocket {
   }
   
   boolean lowFuel() {
-     return 100 * fuel / getInitialFuel() < 30 ? true : false;  
+     return 100 * fuel / getInitialFuel() < 20 ? true : false;  
   }
   
   float getMass() {
@@ -79,7 +79,7 @@ class Rocket {
   
   void calculateFitness(Planet planet) {
     float d = planet.getLocation().dist(this.location);
-    if(d < 20) {
+    if(d < planet.diameter+5) {
       fitness = fitness * 0.5;
       return;
     }
@@ -90,8 +90,14 @@ class Rocket {
   }
   
   boolean isFitToClone(float avgScore) {
-    return fitness > avgScore && fuel%200 == 0 && noise(random(10)) < 0.5? true : false;
+    return isScoreAboveAvg() && fuel%20 == 0 && noise(random(10)) < 0.5? true : false;
   }
+  
+  boolean isScoreAboveAvg() {
+    return fitness > avgScore ? true : false;  
+  }
+  
+  
   
   boolean isAlive() {
     return fuel > 0 ? true: false;
