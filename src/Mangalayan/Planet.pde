@@ -9,7 +9,7 @@ class Planet {
   //boolean dragging = false; // Is the object being dragged?
   //boolean rollover = false; // Is the mouse over the ellipse?
   //PVector dragOffset;  // holds the offset for when object is clicked on
-  float diameterScale = 0.1;
+  float diameterScale = 0.5;
   int distanceScale = 25;
 
   Planet(float mass, PVector location) {

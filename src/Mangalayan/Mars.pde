@@ -1,5 +1,5 @@
 class Mars extends Planet {
-  final static float mass = 650;    // Mass, tied to size
+  final static float mass = 230;    // Mass, tied to size
   
   Mars() {    
     super(mass, new PVector(width - width/5,height/2));

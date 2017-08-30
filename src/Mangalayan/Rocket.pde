@@ -73,7 +73,7 @@ class Rocket {
   void calculateFitness(Planet planet) {
     float d = planet.getLocation().dist(this.location);
     if(d < 20) {
-      fitness = fitness * 0.01;
+      fitness = fitness * 0.5;
       return;
     }
     float ratio = width/d;

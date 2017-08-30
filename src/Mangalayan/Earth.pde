@@ -1,5 +1,5 @@
 class Earth extends Planet {
-  final static float mass = 500;    // Mass, tied to size
+  final static float mass = 200;    // Mass, tied to size
   
   Earth() {
     super(mass, new PVector(width/6,height/2));
