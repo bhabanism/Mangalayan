@@ -9,7 +9,7 @@ class Mars extends Planet {
   
     // Method to display
   void display() {
-    fill (255,0,0);
+    fill (255,0,0); //red
     super.display();    
   }
 }

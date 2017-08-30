@@ -9,7 +9,7 @@ class Earth extends Planet {
   
     // Method to display
   void display() {
-    fill (0,120,255);
+    fill (0,120,255); //blue
     super.display();
   } 
   

@@ -1,9 +1,3 @@
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
-
-// A class for a draggable attractive body in our world
-
 class Planet {
   float mass;    // Mass, tied to size
   float G;       // Gravitational Constant
@@ -39,39 +33,6 @@ class Planet {
     else fill(175,200);*/
     ellipse(location.x,location.y,mass*5,mass*5);
   }
-
-  // The methods below are for mouse interaction
-  /*void clicked(int mx, int my) {
-    float d = dist(mx,my,location.x,location.y);
-    if (d < mass) {
-      dragging = true;
-      dragOffset.x = location.x-mx;
-      dragOffset.y = location.y-my;
-    }
-  }
-
-  void hover(int mx, int my) {
-    float d = dist(mx,my,location.x,location.y);
-    if (d < mass) {
-      rollover = true;
-    } 
-    else {
-      rollover = false;
-    }
-  }
-
-  void stopDragging() {
-    dragging = false;
-  }
-
-
-
-  void drag() {
-    if (dragging) {
-      location.x = mouseX + dragOffset.x;
-      location.y = mouseY + dragOffset.y;
-    }
-  }*/
   
   PVector getLocation() {
     return new PVector(location.x, location.y);

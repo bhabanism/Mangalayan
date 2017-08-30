@@ -1,9 +1,5 @@
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
-
-int count = 10;
-Rocket[] rockets = new Rocket[count];
+int initialpopulation = 150;
+Rocket[] rockets = new Rocket[initialpopulation];
 
 Mars mars;
 Earth earth;
@@ -37,11 +33,3 @@ void draw() {
     rockets[i].display();
   }
 }
-
-/*void mousePressed() {
-  mars.clicked(mouseX, mouseY);
-}
-
-void mouseReleased() {
-  mars.stopDragging();
-}*/
