@@ -26,12 +26,9 @@ class Planet {
   // Method to display
   void display() {
     ellipseMode(CENTER);
-    strokeWeight(4);
+    strokeWeight(2);
     stroke(0);
-    /*if (dragging) fill (50);
-    else if (rollover) fill(100);
-    else fill(175,200);*/
-    ellipse(location.x,location.y,mass*5,mass*5);
+    ellipse(location.x,location.y,mass*10,mass*10);
   }
   
   PVector getLocation() {

@@ -14,6 +14,7 @@ void setup() {
     PVector rocketLocation = earthLocation.add(new PVector(random(-2,2),random(-2,2)));
     PVector initialThrust = new PVector(random(-1*maxSpeed,1*maxSpeed),random(-1*maxSpeed,1*maxSpeed));
     rockets[i] = new Rocket(random(0.1, 1),rocketLocation, initialThrust);
+    rockets[i].setColor((int)random(255),(int)random(255),(int)random(255));
   }
 }
 
@@ -29,7 +30,7 @@ void draw() {
     PVector totalForce = marsForce.add(earthForce);
     rockets[i].applyForce(totalForce);
 
-    rockets[i].update();
+    rockets[i].update();    
     rockets[i].display();
   }
 }

@@ -4,6 +4,8 @@ class Rocket {
   PVector velocity;
   PVector acceleration;
   float mass;
+  
+  int r,g,b;
 
   Rocket(float m, PVector location, PVector initialThurst) {
     mass = m;
@@ -22,11 +24,17 @@ class Rocket {
     location.add(velocity);
     acceleration.mult(0);
   }
+  
+  void setColor(int r,int g,int b) {
+    this.r = r;
+    this.g = g;
+    this.b = b;    
+  }
 
   void display() {
     stroke(0);
-    strokeWeight(2);
-    fill(0,100);
+    strokeWeight(0);
+    fill(r,g,b);
     ellipse(location.x, location.y, mass*5, mass*5);
   }
 }
