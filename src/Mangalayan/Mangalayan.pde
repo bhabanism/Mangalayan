@@ -43,20 +43,6 @@ void draw() {
       iter.add(new Rocket(rocket));
     }
   }
-
-
-  /*for(Rocket rocket : rockets) {
-    if(rocket.isAlive()) {
-      PVector marsForce = mars.attract(rocket);
-      PVector earthForce = earth.attract(rocket);
-      PVector totalForce = marsForce.add(earthForce);
-      rocket.applyForce(totalForce);
-      rocket.update();    
-      rocket.display();   
-    } else {
-      rockets.add(rocket);
-    }
-  }*/
 }
 
 Rocket createRocket() {
