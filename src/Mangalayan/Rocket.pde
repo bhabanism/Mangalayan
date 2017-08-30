@@ -7,6 +7,7 @@ class Rocket {
   float scaleForFuel = 1.5;
   int r,g,b;
   float fitness = 0;
+  final int fuelUsage = 2;
   
   //genes
   final PVector launchLocation;
@@ -30,7 +31,17 @@ class Rocket {
     //PVector location = new PVector(rocket.getInitialThurst().x * random(0.9,1.1), rocket.getInitialThurst().y * random(0.9,1.1));
     this(rocket.getMass() * random(0.9,1.1), 
       new PVector(rocket.getLaunchLocation().x * random(1-mutationRate,1+mutationRate), rocket.getLaunchLocation().y * random(1-mutationRate,1+mutationRate)), 
-      new PVector(rocket.getInitialThurst().x * random(1-mutationRate,1+mutationRate), rocket.getInitialThurst().y * random(1-mutationRate,1+mutationRate)));    
+      new PVector(rocket.getInitialThurst().x * random(1-mutationRate,1+mutationRate), rocket.getInitialThurst().y * random(1-mutationRate,1+mutationRate))); 
+    
+    if(rocket.fitness > avgScore) {
+      int n = stats.get("Born above avg : ");
+      n++;
+      stats.put("Born above avg : ", n);
+    } else {
+      int n = stats.get("Born below avg : ");
+      n++;
+      stats.put("Born below avg : ", n);
+    }
   }  
   
   int getInitialFuel() {    
@@ -62,12 +73,8 @@ class Rocket {
     velocity.add(acceleration);
     location.add(velocity);
     acceleration.mult(0);    
-    fuel--;
+    fuel-=fuelUsage;
     //TODO add fuel penalty for take off delay
-  }
-  
-  void spendFuelToTransmit() {
-    fuel-=50;
   }
   
   void calculateFitness(Planet planet) {
@@ -93,6 +100,15 @@ class Rocket {
   void destroy() {
     fitness = 0;
     fuel = 0;
+    if(fitness > avgScore) {
+      int n = stats.get("Died above avg : ");
+      n++;
+      stats.put("Died above avg : ", n);
+    } else {
+      int n = stats.get("Died below avg : ");
+      n++;
+      stats.put("Died below avg : ", n);
+    }
   }
   
   PVector getLocation() {

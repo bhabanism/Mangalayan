@@ -4,6 +4,8 @@ import java.util.ListIterator;
 int initialpopulation = 50;
 //Rocket[] rockets = new Rocket[initialpopulation];
 ArrayList<Rocket> rockets = new ArrayList<Rocket>();
+
+public static HashMap<String,Integer> stats = new HashMap<String,Integer>();
  
 Rocket bestRocket;
 float bestScore = 0;
@@ -17,6 +19,11 @@ Earth earth;
 final static int maxSpeed = 6; 
 
 void setup() {  
+  stats.put("Born above avg : ", 0);
+  stats.put("Born below avg : ", 0);
+  stats.put("Died above avg : ", 0);
+  stats.put("Died below avg : ", 0);
+  
   size(1200, 750);
   mars = new Mars();
   earth = new Earth();
@@ -71,7 +78,7 @@ void draw() {
 void massExtinction() {
   for(Rocket rocket : rockets) {
     if(rocket.lowFuel()) {
-      //rocket.destroy();
+      rocket.destroy();
     }
   }
 }
@@ -93,10 +100,12 @@ float updateScore() {
   String noticeboard = "Best Score: " + bestScore;
   noticeboard += "\n Average Score : " + avgScore;
   noticeboard += "\n Generation: " + generation;
-  noticeboard += "\n fuel left with best rocket : " + bestRocket.fuel;
   noticeboard += "\n Population : " + rockets.size();
-  noticeboard += "\n debug noise : " + noise(random(10));
-  text(noticeboard, width*2/3,height*5/6);
+  noticeboard += "\nBorn above avg : " + stats.get("Born above avg : ");
+  noticeboard += "\nBorn below avg : " + stats.get("Born below avg : ");
+  noticeboard += "\nDied above avg : " + stats.get("Died above avg : ");
+  noticeboard += "\nDied below avg : " + stats.get("Died below avg : ");
+  text(noticeboard, width*2/3,height*2/3);
   PVector loc = bestRocket.getLocation();
   rect(loc.x, loc.y, 5, 5);
   return avgScore;
