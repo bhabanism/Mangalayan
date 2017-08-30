@@ -3,8 +3,6 @@ class Earth extends Planet {
   
   Earth() {
     super(mass, new PVector(width/2,height - height/4));
-    G = 1;
-    dragOffset = new PVector(0.0,0.0);
   }
   
     // Method to display

@@ -7,7 +7,7 @@ ArrayList<Rocket> rockets = new ArrayList<Rocket>();
 
 Mars mars;
 Earth earth;
-final static int maxSpeed = 5; 
+final static int maxSpeed = 3; 
 
 void setup() {  
   size(800, 750);
@@ -36,11 +36,15 @@ void draw() {
         PVector earthForce = earth.attract(rocket);
         PVector totalForce = marsForce.add(earthForce);
         rocket.applyForce(totalForce);
-        rocket.update();    
-        rocket.display();   
+        rocket.update(); 
+        rocket.display();
+        if(mars.isCrashed(rocket)) {
+          iter.remove(); //TODO: crashed rocket animation
+          iter.add(new Rocket(rocket)); //clone
+        }
     } else {
-      iter.remove();
-      iter.add(new Rocket(rocket));
+      iter.remove(); //TODO: lost rocket animation
+      iter.add(new Rocket(rocket)); //clone
     }
   }
 }

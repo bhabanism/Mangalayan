@@ -56,6 +56,10 @@ class Rocket {
     return fuel > 0 ? true: false;
   }
   
+  PVector getLocation() {
+    return new PVector(location.x, location.y);
+  }  
+  
   void setColor(int r,int g,int b) {
     this.r = r;
     this.g = g;

@@ -3,13 +3,15 @@ class Mars extends Planet {
   
   Mars() {    
     super(mass, new PVector(width/2,height/4));
-    G = 1;
-    dragOffset = new PVector(0.0,0.0);
   }
   
     // Method to display
   void display() {
     fill (255,0,0); //red
     super.display();    
+  }
+  
+  boolean isCrashed(Rocket rocket) {
+     return this.getLocation().dist(rocket.getLocation()) < this.diameter/2 ? true: false;
   }
 }
